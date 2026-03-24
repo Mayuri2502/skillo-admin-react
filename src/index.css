@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+}
+
+#root {
+    width: 100%;
+    height: 100vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px!important;
+    height: 10px!important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 50px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 50px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.text-danger,
+.text-danger-50,
+.text-danger-100,
+.text-danger-200,
+.text-danger-300,
+.text-danger-400,
+.text-danger-500,
+.text-danger-600,
+.text-danger-700,
+.text-danger-800,
+.text-danger-900 {
+    color: #fb2c36 !important;
+}
+
+.border-danger-50,
+.border-danger-100,
+.border-danger-200,
+.border-danger-300,
+.border-danger-400,
+.border-danger-500,
+.border-danger-600,
+.border-danger-700,
+.border-danger-800,
+.border-danger-900,
+.border-danger {
+    border-color: #fb2c36 !important;
+}
+
+.text-primary{
+    color: #F4C462 !important;
+}
+
+button {
+    cursor: pointer !important;
+}
+
+.navtabs,
+div[data-slot="tabList"] {
+    background-color: #8A8A8A !important;
+}
+
+.bg-content1 {
+    background-color: #343434 !important;
+}
+
+.sticky-col {
+    position: sticky;
+    right: 0;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+}
+
+.sticky-col-dark {
+    background: #1c1c1d;
+}
+
+section[role="dialog"] {
+    background-color: #141414 !important;
+    color: #fff !important;
+}
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}

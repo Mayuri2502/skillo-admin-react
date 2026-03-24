@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>
+  
+  <!-- House Base -->
+  <rect x="14" y="24" width="36" height="28" fill="#90CAF9" stroke="#1565C0" stroke-width="2"/>
+  
+  <!-- Roof -->
+  <path d="M10 26 L32 10 L54 26" fill="#64B5F6" stroke="#1565C0" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Door -->
+  <rect x="28" y="36" width="8" height="16" fill="#FFE082" stroke="#F57F17" stroke-width="1.5"/>
+  <circle cx="34" cy="44" r="1" fill="#F57F17"/>
+  
+  <!-- Window Left -->
+  <rect x="18" y="30" width="6" height="6" fill="#E1F5FE" stroke="#0277BD" stroke-width="1.5"/>
+  <line x1="21" y1="30" x2="21" y2="36" stroke="#0277BD" stroke-width="1"/>
+  <line x1="18" y1="33" x2="24" y2="33" stroke="#0277BD" stroke-width="1"/>
+  
+  <!-- Window Right -->
+  <rect x="40" y="30" width="6" height="6" fill="#E1F5FE" stroke="#0277BD" stroke-width="1.5"/>
+  <line x1="43" y1="30" x2="43" y2="36" stroke="#0277BD" stroke-width="1"/>
+  <line x1="40" y1="33" x2="46" y2="33" stroke="#0277BD" stroke-width="1"/>
+  
+  <!-- Sparkle/Clean Symbol -->
+  <path d="M32 6 L33.5 9 L37 9.5 L34.5 12 L35 15.5 L32 14 L29 15.5 L29.5 12 L27 9.5 L30.5 9 Z" fill="#FFD54F"/>
+</svg>
