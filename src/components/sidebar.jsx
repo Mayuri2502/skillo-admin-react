@@ -18,7 +18,7 @@ import {
   MdLogout,
   MdClose,
 } from "react-icons/md";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 import { FaFootballBall } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
@@ -44,6 +44,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const { t } = useTranslation();
@@ -93,6 +94,8 @@ const Sidebar = ({ isOpen = false, onClose }) => {
     onOpenChange: onOpenChangeLogoutModal,
   } = useDisclosure();
 
+  const toggleSidebar = () => setIsCollapsed(!isCollapsed);
+
   const handleLogout = async () => {
     setIsLoggingOut(true);
 
@@ -110,7 +113,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
 
   return (
     <div
-      className={`fixed lg:absolute left-0 top-0 bottom-0 bg-[#2C6587] border-r border-[#285B7A] rounded-br-[12px] rounded-tr-[12px] overflow-y-auto transition-transform duration-300 z-40 ${
+      className={`fixed lg:absolute left-0 top-0 bottom-0 bg-[#1A1A1A] border-r border-[#333333] rounded-br-[12px] rounded-tr-[12px] overflow-y-auto transition-transform duration-300 z-40 ${
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       }`}
     >
@@ -119,26 +122,34 @@ const Sidebar = ({ isOpen = false, onClose }) => {
 
         {/* Logo */}
         <div>
-          <div className="flex items-center justify-start gap-2 mb-10">
-            <div className=" flex flex-col w-[50px] h-15">
-              <img
-                alt="Skillo logo"
-                className="w-full h-full object-contain"
-                src={logoImage}
-              />
-            </div>
-            <div>
-              <img
-                src="/skillo-logo.png"
-                alt="Skillo logo"
-                className="h-8 w-auto object-contain"
-              />
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-start gap-2">
+              <div className=" flex flex-col w-[50px] h-15">
+                <img
+                  alt="Skillo logo"
+                  className="w-full h-full object-contain"
+                  src={logoImage}
+                />
+              </div>
+              {!isCollapsed && (
+                <div>
+                  <img
+                    src="/skillo-logo.png"
+                    alt="Skillo logo"
+                    className="h-8 w-auto object-contain"
+                  />
+                </div>
+              )}
             </div>
             <button
-              onClick={onClose}
-              className="absolute right-2 text-[#FFFFFF]  hover:text-[#0B83D0] md:hidden"
+              onClick={toggleSidebar}
+              className="text-[#FFFFFF] hover:text-[#EC613D] transition-colors"
             >
-              <MdKeyboardDoubleArrowLeft className="text-[#FFFFFF]" size={28} />
+              {isCollapsed ? (
+                <MdKeyboardDoubleArrowRight className="text-xl" />
+              ) : (
+                <MdKeyboardDoubleArrowLeft className="text-xl" />
+              )}
             </button>
           </div>
 
@@ -175,14 +186,16 @@ const Sidebar = ({ isOpen = false, onClose }) => {
                       }
                       className={`flex items-center gap-2 px-5 py-3 rounded-2xl transition-all w-full text-left ${
                         isAnyDropdownItemActive
-                          ? "bg-[#0B83D0] text-[#FFFFFF] rounded-2xl"
-                          : "text-[#FFFFFF] hover:bg-[#285B7A] rounded-2xl"
+                          ? "bg-[#EC613D] text-[#FFFFFF] rounded-2xl"
+                          : "text-[#FFFFFF] hover:bg-[#333333] rounded-2xl"
                       }`}
                     >
                       <Icon className=" shrink-0" />
-                      <span className="capitalize text-sm font-normal flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {item.name}
-                      </span>
+                      {!isCollapsed && (
+                        <span className="capitalize text-sm font-normal flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                          {item.name}
+                        </span>
+                      )}
                       <IoIosArrowDown
                         className={`text-xs shrink-0 transition-transform ${
                           isDropdownOpen ? "rotate-180" : ""
@@ -194,14 +207,16 @@ const Sidebar = ({ isOpen = false, onClose }) => {
                       to={item.path}
                       className={`flex items-center gap-2 px-5 py-3 rounded transition-all ${
                         isActive
-                          ? "bg-[#0B83D0] text-[#FFFFFF] rounded-2xl"
-                          : "text-[#FFFFFF] hover:bg-[#285B7A] rounded-2xl"
+                          ? "bg-[#EC613D] text-[#FFFFFF] rounded-2xl"
+                          : "text-[#FFFFFF] hover:bg-[#333333] rounded-2xl"
                       }`}
                     >
                       <Icon className="text-base bg-transparent shrink-0" />
-                      <span className="capitalize text-sm font-normal flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {item.name}
-                      </span>
+                      {!isCollapsed && (
+                        <span className="capitalize text-sm font-normal flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                          {item.name}
+                        </span>
+                      )}
                     </Link>
                   )}
 
@@ -220,16 +235,18 @@ const Sidebar = ({ isOpen = false, onClose }) => {
                             to={dropdownItem.path}
                             className={`flex items-center gap-2 px-4 py-3 rounded transition-all ${
                               isDropdownActive
-                                ? "bg-[#285B7A] text-[#FFFFFF] rounded-2xl"
-                                : "text-[#FFFFFF] hover:bg-[#2C6587] rounded-2xl"
+                                ? "bg-[#EC613D] text-[#FFFFFF] rounded-2xl"
+                                : "text-[#FFFFFF] hover:bg-[#333333] rounded-2xl"
                             }`}
                           >
                             {/* {DropdownIcon && (
                               <DropdownIcon className="text-sm shrink-0" />
                             )} */}
-                            <span className="capitalize text-xs font-normal">
-                              {dropdownItem.name}
-                            </span>
+                            {!isCollapsed && (
+                              <span className="capitalize text-xs font-normal">
+                                {dropdownItem.name}
+                              </span>
+                            )}
                           </Link>
                         );
                       })}
@@ -243,13 +260,15 @@ const Sidebar = ({ isOpen = false, onClose }) => {
 
         {/* Logout */}
         <div className="pt-2">
-          <div className="w-full h-px bg-[#064872] mb-2"></div>
+          <div className="w-full h-px bg-[#333333] mb-2"></div>
           <button
-            className="flex items-center gap-2 px-8 py-3 rounded w-full text-left text-[#FFFFFF] hover:bg-[#285B7A] transition-all"
+            className="flex items-center gap-2 px-8 py-3 rounded w-full text-left text-[#FFFFFF] hover:bg-[#333333] transition-all"
             onClick={onOpenLogoutModal}
           >
             <MdLogout className="text-xl shrink-0" />
-            <span className="capitalize text-sm">{t("logoutFromSidebar")}</span>
+            {!isCollapsed && (
+              <span className="capitalize text-sm">{t("logoutFromSidebar")}</span>
+            )}
           </button>
         </div>
 
