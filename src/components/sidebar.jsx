@@ -122,13 +122,17 @@ const Sidebar = ({ isOpen = false, onClose }) => {
           <div className="flex items-center justify-start gap-2 mb-10">
             <div className=" flex flex-col w-[50px] h-15">
               <img
-                alt="CoudPouss logo"
+                alt="Skillo logo"
                 className="w-full h-full object-contain"
                 src={logoImage}
               />
             </div>
             <div>
-              <h1 className="text-[#FFFFFF] font-semibold ">CoudPouss</h1>
+              <img
+                src="/skillo-logo.png"
+                alt="Skillo logo"
+                className="h-8 w-auto object-contain"
+              />
             </div>
             <button
               onClick={onClose}
