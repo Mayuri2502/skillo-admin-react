@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 
 const OverviewTabs = ({ onTabChange, activeTab, setActiveTab }) => {
   const { t } = useTranslation();
-  // const [activeTab, setActiveTab] = useState('weekly');
 
   const tabs = [
-    { id: "daily", label: t("overviewTab.daily") },
+    // { id: "daily", label: t("overviewTab.daily") },
     { id: "weekly", label: t("overviewTab.weekly") },
     { id: "monthly", label: t("overviewTab.monthly") },
     { id: "yearly", label: t("overviewTab.yearly") },
@@ -33,7 +32,7 @@ const OverviewTabs = ({ onTabChange, activeTab, setActiveTab }) => {
                 onClick={() => handleTabClick(tab.id)}
                 className={`px-4 sm:px-6 py-2 rounded-[13px] text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "bg-[#0B83D0] text-[#FFFFFF]"
+                    ? "bg-[#EC613D] text-[#FFFFFF]"
                     : "text-black hover:text-grey"
                 }`}
               >
