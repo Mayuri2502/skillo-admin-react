@@ -687,7 +687,7 @@ const Dashboard = () => {
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-2">
           <SalesChart
-            title={t("DashboardData.sales")}
+            title="Sales Performance"
             chartData={data?.sales_performance}
             isLoading={loading}
             activeTab={activeTab}
@@ -695,7 +695,7 @@ const Dashboard = () => {
         </div>
 
         <TransactionChart
-          title={t("DashboardData.transaction")}
+          title="Transaction Count"
           trasctionData={data?.transaction_count}
           isLoading={loading}
           activeTab={activeTab}
