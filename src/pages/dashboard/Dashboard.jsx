@@ -705,7 +705,7 @@ const Dashboard = () => {
       {/* Tables */}
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Table
-          title={t("DashboardData.elderUsers")}
+          title="Customer Users (Individual)"
           data={elderUsers}
           columns={elderUsersColumns}
           isLoading={loading}
@@ -718,7 +718,35 @@ const Dashboard = () => {
         />
 
         <Table
-          title={t("DashboardData.professionalUsers")}
+          title="Customer Users (Business)"
+          data={professionalUsers}
+          columns={professionalUsersColumns}
+          isLoading={loading}
+          pagination={{
+            page: professionalPage,
+            size: professionalPageSize,
+            total: professionalTotal,
+          }}
+          onPageChange={setProfessionalPage}
+        />
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Table
+          title="Professional Users"
+          data={elderUsers}
+          columns={elderUsersColumns}
+          isLoading={loading}
+          pagination={{
+            page: elderPage,
+            size: elderPageSize,
+            total: elderTotal,
+          }}
+          onPageChange={setElderPage}
+        />
+
+        <Table
+          title="Professional Users (Plus)"
           data={professionalUsers}
           columns={professionalUsersColumns}
           isLoading={loading}
