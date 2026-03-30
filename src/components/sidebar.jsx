@@ -57,19 +57,8 @@ const Sidebar = ({ isOpen = false, onClose }) => {
     },
     {
       name: t("userManagement"),
-      path: "/user-management/*",
+      path: "/user-management/elder-users",
       icon: FiUsers,
-      hasDropdown: true,
-      dropdownItems: [
-        {
-          name: t("elderUsers"),
-          path: "/user-management/elder-users",
-        },
-        {
-          name: t("userManagementData.professionalUsers"),
-          path: "/user-management/professional-users",
-        },
-      ],
     },
     {
       name: t("verification"),

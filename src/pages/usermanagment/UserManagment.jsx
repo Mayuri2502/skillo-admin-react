@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import ModalView from "../../components/Model";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { banUser, getUsers } from "../../apis/usermanagement.api";
 import { getColumns } from "./components/Columns";
 import { toast } from "sonner";
@@ -13,13 +13,10 @@ import { FiSearch } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
 const UserManagment = () => {
-  const { pathname } = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [modelOpen, setModelOpen] = useState(false);
   const navigate = useNavigate();
-  const userType = pathname.includes("elder-users")
-    ? "elderly_user"
-    : "service_provider";
+  const userType = "elderly_user";
   const [users, setUsers] = useState({ data: [], total: 0 });
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -175,11 +172,7 @@ const UserManagment = () => {
 
         {/* <div className="mt-5"> </div> */}
         <Table
-          title={
-            userType === "elderly_user"
-              ? t("userManagementData.elderlyUser")
-              : t("userManagementData.professionalUsers")
-          }
+          title={t("userManagementData.elderlyUser")}
           isHeaderVisible={true}
           searchable={false}
           exportable={false}
@@ -254,8 +247,8 @@ const UserManagment = () => {
           </div>
         </ModalView>
       </MainLayout>
-    </div>
+    </div> 
   );
 };
 
-export default UserManagment;
+export default UserManagment;  
