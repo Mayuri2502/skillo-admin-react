@@ -27,6 +27,10 @@ import { IoFootball } from "react-icons/io5";
 import { MdOutlineVerified } from "react-icons/md";
 import { LuSquareChartGantt } from "react-icons/lu";
 import { RiSecurePaymentLine } from "react-icons/ri";
+import { MdSettings } from "react-icons/md";
+import { RiPriceTag3Line } from "react-icons/ri";
+import { MdPercent } from "react-icons/md";
+import { MdError } from "react-icons/md";
 
 import {
   Modal,
@@ -69,12 +73,43 @@ const Sidebar = ({ isOpen = false, onClose }) => {
       name: t("requestsManagement"),
       path: "/requests-management",
       icon: LuSquareChartGantt,
+      dropdownItems: [
+        {
+          name: t("Customer"),
+          path: "/requests/customer",
+        },
+        {
+          name: t("Business"),
+          path: "/requests/business",
+        },
+      ],
     },
     {
-      name: t("transactionManagement"),
+      name: t("paymentManagement"),
       path: "/payment-management",
       icon: RiSecurePaymentLine,
     },
+    {
+      name: t("service Management"),
+      path: "/service-management",
+      icon: MdSettings,
+    },
+    {
+      name: t("subscription Management"),
+      path: "/subscription-management",
+      icon: RiPriceTag3Line,
+    },
+    {
+      name: t("discount Management"),
+      path: "/discount-management",
+      icon: MdPercent,
+    },
+    {
+      name: t("dispute Management"),
+      path: "/dispute-management",
+      icon: MdError,
+    },
+
   ];
 
   const {
