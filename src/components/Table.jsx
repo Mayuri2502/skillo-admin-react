@@ -397,7 +397,7 @@ const Table = ({
                     wrapper:
                       "gap-1 bg-[#E6E6E666] border border-[#D1D1D1] rounded-xl",
                     item: "w-8 h-8 text-xs font-medium bg-transparent text-[#1F2128] hover:bg-[#B1B1B1!important]",
-                    cursor: "bg-[#0B83D0] w-8 h-[38px] text-black font-medium",
+                    cursor: "bg-[#EC613D] w-8 h-[38px] text-black font-medium",
                     prev: "bg-transparent text-[#B1B1B1]",
                     next: "bg-transparent text-[#B1B1B1]",
                   }}
