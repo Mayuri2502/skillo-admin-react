@@ -36,8 +36,49 @@ const Header = ({ title = "Dashboard", toggleSidebar }) => {
   const [logOut, setLogOut] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notificationsData, setNotificationsData] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [notificationsData, setNotificationsData] = useState([
+    {
+      id: 1,
+      title: "New User Registration",
+      message: "John Doe has registered as a Professional User",
+      type: "success",
+      isRead: false,
+      createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 minutes ago
+    },
+    {
+      id: 2,
+      title: "Payment Received",
+      message: "Payment of $500 received from Customer Business",
+      type: "success",
+      isRead: false,
+      createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+    },
+    {
+      id: 3,
+      title: "Job Completed",
+      message: "Service request #1234 has been marked as completed",
+      type: "success",
+      isRead: true,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+    },
+    {
+      id: 4,
+      title: "System Alert",
+      message: "Scheduled maintenance will occur tonight at 2 AM",
+      type: "warning",
+      isRead: true,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    },
+    {
+      id: 5,
+      title: "Failed Transaction",
+      message: "Transaction #5678 failed due to insufficient funds",
+      type: "error",
+      isRead: false,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), // 3 hours ago
+    },
+  ]);
+  const [unreadCount, setUnreadCount] = useState(3);
   const [loader, setLoader] = useState(false);
   const [userData, storeUserData] = useState();
   const { i18n } = useTranslation();
@@ -115,8 +156,7 @@ const Header = ({ title = "Dashboard", toggleSidebar }) => {
       </div>
 
       <div className="flex items-center gap-3 sm:gap-5">
-        <LanguageSwitch />
-        {/* <button
+        <button
           className="relative text-white hover:text-[#285B7A] transition-colors"
           onClick={() => {
             setNotificationOpen((prev) => !prev);
@@ -130,7 +170,7 @@ const Header = ({ title = "Dashboard", toggleSidebar }) => {
               </span>
             )}
           </div>
-        </button> */}
+        </button>
         {notificationOpen && (
           <Notification
             notificationsData={notificationsData}

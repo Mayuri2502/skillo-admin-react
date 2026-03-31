@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axiosInstance from "../../lib/Axios";
 import { Spinner } from "@heroui/react";
 import { Image } from "@heroui/react";
