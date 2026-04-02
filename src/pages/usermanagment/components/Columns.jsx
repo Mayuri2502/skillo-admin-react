@@ -126,7 +126,7 @@ export const getColumns = (
             group h-10 w-10 flex items-center justify-center rounded-xl transition-colors
             ${
               isActive
-                ? "bg-[#FF94291F] hover:bg-[#2C6587] cursor-pointer"
+                ? "bg-[#EC613D1F] hover:bg-[#EC613D] cursor-pointer"
                 : "bg-gray-200 cursor-not-allowed"
             }
           `}
@@ -136,7 +136,7 @@ export const getColumns = (
               transition-colors
               ${
                 isActive
-                  ? "text-[#FF9429] group-hover:text-white"
+                  ? "text-[#EC613D] group-hover:text-white"
                   : "text-gray-400"
               }
             `}

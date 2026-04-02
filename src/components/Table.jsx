@@ -210,26 +210,20 @@ const Table = ({
                 )}
 
                 {showtabs && (
-                  <div>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto overflow-x-auto">
-                      <div className=" rounded-[13px] flex items-center p-1 overflow-x-auto w-full sm:w-auto">
-                        <div className="flex gap-1">
-                          {tabs.map((tab) => (
-                            <button
-                              key={tab.id}
-                              onClick={() => handleTabClick(tab.id)}
-                              className={`px-4 sm:px-6 py-2 rounded-[8px] text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                                activeTab === tab.id
-                                  ? "bg-[#2C6587] text-white"
-                                  : "text-[#8a8a8a] bg-[#E9ECEE] text-[#333333] hover:text-black"
-                              }`}
-                            >
-                              {tab.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => handleTabClick(tab.id)}
+                        className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                          activeTab === tab.id
+                            ? "bg-[#EC613D] text-white shadow-sm"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
                   </div>
                 )}
 

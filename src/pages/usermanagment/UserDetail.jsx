@@ -227,8 +227,8 @@ const UserDetail = () => {
             aria-label="View service details"
             className="
             h-10 w-10
-            bg-[#FF94291F]
-            hover:bg-[#2C6587]
+            bg-[#EC613D1F]
+            hover:bg-[#EC613D]
             transition-colors
             flex items-center justify-center
             rounded-xl
@@ -252,7 +252,7 @@ const UserDetail = () => {
               // onClick={() => navigate(`/requests/${row.id}`)}
             }}
           >
-            <FaEye className="text-[#FF9429] group-hover:text-white" />
+            <FaEye className="text-[#EC613D] group-hover:text-white" />
           </button>
         ),
       },
@@ -282,14 +282,14 @@ const UserDetail = () => {
   return (
     <MainLayout title={t("userManagement")}>
       <div
-        className="bg-[#FFFFFF] font-medium my-4 sm:my-5  text-xs sm:text-sm p-3 sm:p-5 rounded-lg cursor-pointer"
+        className="bg-white font-medium my-4 sm:my-5 text-xs sm:text-sm p-3 sm:p-5 rounded-lg cursor-pointer border border-gray-200 hover:bg-gray-50 transition-colors"
         onClick={() => navigate(-1)}
       >
-        <IoIosArrowBack className="inline mb-1 mr-2" />
+        <IoIosArrowBack className="inline mb-1 mr-2 text-[#EC613D]" />
         {t("userManagementData.backToAllUser")}
       </div>
 
-      <div className=" mx-auto">
+      <div className="mx-auto">
         <div className="flex flex-col xl:flex-row items-start gap-4 sm:gap-6 lg:gap-4 mb-6 lg:mb-8">
           {/* User card */}
           <div className="shrink-0 w-full xl:w-1/2">
@@ -363,6 +363,7 @@ const UserDetail = () => {
         tabs={tabs}
         activeTab={activeTab}
         setActiveTab={handleTabChange}
+        onTabChange={handleTabChange}
         filter={
           isMobile && (
             <FilterDropdown
