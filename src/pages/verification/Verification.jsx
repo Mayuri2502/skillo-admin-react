@@ -47,20 +47,15 @@ const Verification = () => {
   const [textAreaShow, settestAreaShow] = useState(false);
   const [value, setValue] = useState("");
   const [reasonError, setReasonError] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
 
   const size = Object.keys(userData?.documents || {}).length;
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "-";
-
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  };
+  const tabs = [
+    { id: "all", label: "All" },
+    { id: "individual", label: "Individual Provider" },
+    { id: "business", label: "Business Provider" },
+  ];
 
   const columns = useMemo(
     () => [
@@ -96,6 +91,11 @@ const Verification = () => {
         label: t("verificationData.lastName"),
         width: "160px",
       },
+      { 
+        key: "account_type", 
+        label: "Account Type",
+        width: "140px",
+      },
       { key: "email", label: t("verificationData.email") },
       {
         key: "created_at",
@@ -112,12 +112,12 @@ const Verification = () => {
         render: (id, row) => (
           <div className="flex gap-3">
             <button
-              className="group h-10 w-10 bg-[#FF94291F] hover:bg-[#2C6587] transition-colors flex items-center justify-center rounded-xl"
+              className="group h-10 w-10 bg-[#FF94291F] hover:bg-[#FF9429] transition-colors flex items-center justify-center rounded-xl"
               onClick={() => {
                 getUserDetail(row?.user_id);
               }}
             >
-              <FaEye className="text-[#FF9429] group-hover:text-white" />
+              <FaEye className="text-[#EC613D] group-hover:text-white" />
             </button>
           </div>
         ),
@@ -131,7 +131,12 @@ const Verification = () => {
     try {
       // const res = await axiosInstance.get("/admin/pending-verification",
       const res = await getVerifyDetail({
-        params: { search: searchVal, page: pageNum, limit: limit },
+        params: { 
+          search: searchVal, 
+          page: pageNum, 
+          limit: limit,
+          account_type: activeTab !== "all" ? activeTab : undefined
+        },
       });
 
       // if (res?.status !== 200)
@@ -204,7 +209,7 @@ const Verification = () => {
 
   useEffect(() => {
     getVerificationDetail(page, pageSize);
-  }, [page, searchVal, pageSize]);
+  }, [page, searchVal, pageSize, activeTab]);
 
   const isPdf = (filePath) => {
     return filePath?.toLowerCase().endsWith(".pdf");
@@ -242,6 +247,14 @@ const Verification = () => {
           setPage(1);
         }}
         isLoading={loading}
+        showtabs={true}
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onTabChange={(tabId) => {
+          setActiveTab(tabId);
+          setPage(1);
+        }}
       />
 
       <ModalView
@@ -251,80 +264,70 @@ const Verification = () => {
           settestAreaShow(false);
           setValue("");
         }}
-        width="500px"
-        minHeight="220px"
+        width="480px"
+        minHeight="auto"
       >
-        <div
-          className="px-1 scrollbar-hide"
-          style={{
-            maxHeight: "70vh",
-            overflowY: "auto",
-          }}
-        >
-          <p className="text-lg font-semibold mb-4">
-            {t("verificationData.verfiyProficinal")}
-          </p>
+        <div className="px-6 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">
+              {t("verificationData.verfiyProficinal")}
+            </h2>
+          </div>
 
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-start gap-4 mb-6">
             {userData?.user?.profile_photo_url ? (
-              <div className="flex items-center gap-2">
-                <Image
-                  src={`${userData?.user?.profile_photo_url}`}
-                  alt="Avatar"
-                  className="w-[80px] h-[80px] rounded-full object-cover"
-                />
-                {/* <span>{value}</span> */}
-              </div>
+              <Image
+                src={`${userData?.user?.profile_photo_url}`}
+                alt="Avatar"
+                className="w-16 h-16 rounded-full object-cover"
+              />
             ) : (
-              <div className="flex items-center gap-2">
-                <div className="w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center text-[40px] font-semibold text-gray-700">
-                  {userData?.user?.first_name.charAt(0)?.toUpperCase()}
-                </div>
-                {/* <span>{value}</span> */}
+              <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-semibold text-gray-600">
+                {userData?.user?.first_name.charAt(0)?.toUpperCase()}
               </div>
             )}
 
-            <span className="text-base font-medium text-[#0F172A]">
-              {userData?.user?.first_name + " " + userData?.user?.last_name}
-            </span>
+            <div className="flex-1">
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                {userData?.user?.first_name + " " + userData?.user?.last_name}
+              </h3>
+              <p className="text-sm text-gray-500">
+                {userData?.user?.email}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-3 text-sm mb-4">
-            <div className="flex justify-between gap-6">
-              <span className="font-medium">
-                {t("verificationData.contact")}
+          <div className="space-y-4 mb-6">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">
+                Contact
               </span>
-              <span className="text-[#545454]">
+              <span className="text-sm text-gray-900">
                 {userData?.user?.phone_country_code +
                   " " +
                   userData?.user?.phone_number}
               </span>
             </div>
 
-            <div className="flex justify-between gap-6">
-              <span className="font-medium">{t("verificationData.email")}</span>
-              <span className="text-[#545454]">{userData?.user?.email}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Email</span>
+              <span className="text-sm text-gray-900">{userData?.user?.email}</span>
             </div>
 
-            <div className="flex justify-between gap-6">
-              <span className="font-medium">
-                {t("verificationData.subscritionStatus")}
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">
+                Account Type
               </span>
-              <span className="text-[#46BCAA] font-medium">
-                {userData?.subscription_status == null
-                  ? t("verificationData.notCompleted")
-                  : userData?.subscription_status}
+              <span className="text-sm text-gray-900">
+                {userData?.user?.account_type || "-"}
               </span>
             </div>
 
-            <div className="flex justify-between gap-6">
-              <span className="font-medium">
-                {t("verificationData.Address")}
+            <div className="flex justify-between items-start">
+              <span className="text-sm font-medium text-gray-600">
+                Address
               </span>
-              <span
-                className="text-[#545454] text-right max-w-[260px] truncate"
-                title={userData?.user?.address || "-"}
-              >
+              <span className="text-sm text-gray-900 text-right max-w-[200px]">
                 {userData?.user?.address || "-"}
               </span>
             </div>
@@ -332,210 +335,215 @@ const Verification = () => {
 
           {size > 0 && (
             <>
-              <p className="text-base font-medium mb-3">
-                {t("verificationData.reviewDocument")}
-              </p>
+              <div className="mb-6">
+                <h3 className="text-base font-medium text-gray-900 mb-4">
+                  {t("verificationData.reviewDocument")}
+                </h3>
 
-              <div className="flex gap-3 mb-6 mt-3">
+                <div className="grid grid-cols-3 gap-4 mb-6 mt-3">
                 {[
                   {
-                    name: t("verificationData.AcopyofID"),
+                    name: "Certificate of Incorporation",
                     key: "id_document_file_id",
                   },
                   {
-                    name: t("verificationData.KbisExtract"),
+                    name: "CIPA Extract",
                     key: "kbis_extract_file_id",
                   },
                   {
-                    name: t("verificationData.ProofOfResidence"),
+                    name: "Tax Clearance Certificate",
+                    key: "tax_clearance_file_id",
+                  },
+                  {
+                    name: "Proof of Residence",
                     key: "proof_of_residence_file_id",
+                  },
+                  {
+                    name: "Company Profile",
+                    key: "company_profile_file_id",
+                  },
+                  {
+                    name: "Director Identity Documents",
+                    key: "director_id_file_id",
                   },
                 ].map((doc) => {
                   const file = userData?.documents?.[doc.key];
 
                   return (
-                    <div key={doc.key}>
+                    <div key={doc.key} className="w-full">
+                      <p className="text-[14px] text-[#818285] p-2 text-center font-medium"
+                         title={doc.name}
+                         style={{
+                           maxWidth: "100%",
+                           overflow: "hidden",
+                           textOverflow: "ellipsis",
+                           whiteSpace: "nowrap",
+                         }}
+                      >
+                        {doc.name}
+                      </p>
                       {isPdf(file) ? (
-                        <>
-                          <p className="text-[14px] text-[#818285] p-2">
-                            {doc.name}
+                        <button
+                          className="border-2 border-dotted border-[#818285] h-[100px] w-full rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer"
+                          onClick={() => window.open(`${file}`, "_blank")}
+                        >
+                          <VscFilePdf className="text-2xl text-[#818285]" />
+                          <p className="text-sm text-[#818285]">
+                            View Document
                           </p>
-                          <button
-                            className="border-2 border-dotted border-[#818285] h-[100px] w-[120px] rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer"
-                            onClick={() => window.open(`${file}`, "_blank")}
-                          >
-                            <VscFilePdf className="text-2xl text-[#818285]" />
-                            <p className="text-sm text-[#818285]">
-                              {t("verificationData.viewPdf")}
-                            </p>
-                          </button>
-                        </>
+                        </button>
                       ) : (
-                        <>
-                          <p
-                            className="text-[14px] text-[#818285] p-2"
-                            title={doc.name}
-                            width="120px"
-                            style={{
-                              maxWidth: "120px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {doc.name}
-                          </p>
-                          <div className="max-h-[100px] w-[120px] rounded-xl overflow-hidden border">
-                            {file ? (
-                              <Image
-                                src={`${file}`}
-                                alt="Document"
-                                className="w-full h-full object-cover cursor-pointer"
-                                onClick={() => window.open(`${file}`)}
-                              />
-                            ) : (
-                              <div className="flex justify-center min-h-[100px] items-center text-center mt-2 text-[#818285] text-sm">
-                                {t("verificationData.notUploaded")}
-                              </div>
-                            )}
-                          </div>
-                        </>
+                        <div className="h-[100px] w-full rounded-xl overflow-hidden border flex items-center justify-center">
+                          {file ? (
+                            <Image
+                              src={`${file}`}
+                              alt="Document"
+                              className="w-full h-full object-cover cursor-pointer"
+                              onClick={() => window.open(`${file}`)}
+                            />
+                          ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-center text-[#818285] text-sm">
+                              <p>No Document</p>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                   );
                 })}
+                </div>
               </div>
             </>
           )}
-          {/* textAreaShow , settestAreaShow */}
-          {textAreaShow ? (
-            <div
-              className="mt-4"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-                width: "100%",
+          
+          <div className="flex justify-end gap-3">
+            <button
+              variant="secondary"
+              className="border-2 border-[#EC613D] text-[#EC613D] bg-white hover:bg-gray-50 rounded-xl px-6 h-11 font-medium transition-colors"
+              onClick={() => {
+                settestAreaShow(true);
+                setModelOpen(false);
               }}
             >
-              <div className="w-full">
-                <textarea
-                  className="w-full p-3 bg-[#F5F5F5] text-black rounded-md focus:outline-none focus:border-none hover:border-none"
-                  placeholder="Enter reason of reject"
-                  value={value || ""}
-                  onChange={(e) => {
-                    if (e.target.value.length <= 250) {
-                      setValue(e.target.value);
-                      if (reasonError) setReasonError("");
-                    }
-                  }}
-                  rows={4}
-                  maxLength={250}
-                  style={{
-                    width: "100%",
-                    minHeight: "120px",
-                    resize: "vertical",
-                    fontFamily: "inherit",
-                    fontSize: "14px",
-                    border: reasonError ? "1px solid #fb2c36" : "none",
-                    outline: "none",
-                    boxShadow: "none",
-                  }}
-                />
-                {reasonError && (
-                  <p
-                    className="text-[#fb2c36] text-sm mt-1"
-                    style={{
-                      color: "#fb2c36",
-                      fontSize: "12px",
-                      marginTop: "4px",
-                    }}
-                  >
-                    {reasonError}
-                  </p>
-                )}
-              </div>
-              <div
+              {t("verificationData.reject")}
+            </button>
+            <button
+              className="bg-[#EC613D] text-white hover:bg-[#D5522C] rounded-xl px-6 h-11 font-medium transition-colors"
+              onClick={() => {
+                verifyDoc(userData?.user?.id);
+              }}
+            >
+              {t("verificationData.verify")}
+            </button>
+          </div>
+        </div>
+      </ModalView>
+
+      <ModalView
+        openModel={textAreaShow}
+        setOpenModel={() => {
+          settestAreaShow(false);
+          setValue("");
+          setReasonError("");
+        }}
+        width="520px"
+        minHeight="auto"
+      >
+        <div className="px-6 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Reason of Rejection ?
+            </h2>
+          </div>
+
+          <div className="mb-6">
+            <textarea
+              className="w-full p-3 bg-[#F5F5F5] text-black rounded-md focus:outline-none focus:border-none hover:border-none resize-none"
+              placeholder="Enter description here..."
+              value={value || ""}
+              onChange={(e) => {
+                if (e.target.value.length <= 250) {
+                  setValue(e.target.value);
+                  if (reasonError) setReasonError("");
+                }
+              }}
+              rows={4}
+              maxLength={250}
+              style={{
+                minHeight: "120px",
+                fontFamily: "inherit",
+                fontSize: "14px",
+                border: reasonError ? "1px solid #fb2c36" : "none",
+                outline: "none",
+                boxShadow: "none",
+              }}
+            />
+            {reasonError && (
+              <p
+                className="text-[#fb2c36] text-sm mt-1"
                 style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  gap: "12px",
-                  width: "100%",
+                  color: "#fb2c36",
+                  fontSize: "12px",
+                  marginTop: "4px",
                 }}
               >
-                <Button
-                  variant="secondary"
-                  btnStyle="rounded-xl px-6 h-10"
-                  onClick={() => {
-                    settestAreaShow(false);
-                    setValue("");
-                    setReasonError("");
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => {
-                    const trimmedValue = value ? value.trim() : "";
-                    const allowedRegex = /^[A-Za-z0-9 .,!?()'\-]+$/;
+                {reasonError}
+              </p>
+            )}
+          </div>
 
-                    if (!trimmedValue) {
-                      setReasonError("Please enter a reason for rejection");
-                      return;
-                    }
+          <div className="flex justify-end gap-3">
+            <button
+              className="border-2 border-[#EC613D] text-[#EC613D] bg-white hover:bg-gray-50 rounded-xl px-6 h-11 font-medium transition-colors"
+              onClick={() => {
+                settestAreaShow(false);
+                setValue("");
+                setReasonError("");
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-[#EC613D] text-white hover:bg-[#D5522C] rounded-xl px-6 h-11 font-medium transition-colors"
+              onClick={() => {
+                const trimmedValue = value ? value.trim() : "";
+                const allowedRegex = /^[A-Za-z0-9 .,!?()'\-]+$/;
 
-                    if (!allowedRegex.test(trimmedValue)) {
-                      setReasonError(
-                        "Only letters, numbers and basic punctuation allowed",
-                      );
-                      return;
-                    }
+                if (!trimmedValue) {
+                  setReasonError("Please enter a reason for rejection");
+                  return;
+                }
 
-                    const sqlPattern =
-                      /(select|insert|delete|drop|update|--|;)/i;
-                    if (sqlPattern.test(trimmedValue)) {
-                      setReasonError("Invalid input detected");
-                      return;
-                    }
-                    if (trimmedValue.length < 6) {
-                      setReasonError("Reason must be at least 6 characters");
-                      return;
-                    }
-                    if (trimmedValue.length > 250) {
-                      setReasonError("Reason must be maximum 250 characters");
-                      return;
-                    }
-                    setReasonError("");
-                    rejectDoc(userData?.user?.id);
-                  }}
-                  className="rounded-xl px-10 h-11"
-                >
-                  Submit
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="secondary"
-                btnStyle="rounded-xl px-10 h-11"
-                onClick={() => {
-                  settestAreaShow(true);
-                  // rejectDoc(userData?.user?.id);
-                }}
-              >
-                {t("verificationData.reject")}
-              </Button>
-              <Button
-                btnStyle="rounded-xl px-10 h-11"
-                onClick={() => {
-                  verifyDoc(userData?.user?.id);
-                }}
-              >
-                {t("verificationData.verify")}
-              </Button>
-            </div>
-          )}
+                if (!allowedRegex.test(trimmedValue)) {
+                  setReasonError(
+                    "Only letters, numbers and basic punctuation allowed",
+                  );
+                  return;
+                }
+
+                const sqlPattern =
+                  /(select|insert|delete|drop|update|--|;)/i;
+                if (sqlPattern.test(trimmedValue)) {
+                  setReasonError("Invalid input detected");
+                  return;
+                }
+                if (trimmedValue.length < 6) {
+                  setReasonError("Reason must be at least 6 characters");
+                  return;
+                }
+                if (trimmedValue.length > 250) {
+                  setReasonError("Reason must be maximum 250 characters");
+                  return;
+                }
+                setReasonError("");
+                rejectDoc(userData?.user?.id);
+                settestAreaShow(false);
+                setValue("");
+              }}
+            >
+              Reject
+            </button>
+          </div>
         </div>
       </ModalView>
     </MainLayout>
