@@ -6,7 +6,7 @@ export const getRequestColumns = ({ navigate, t }) => {
   return [
     {
       key: "id",
-      label: t("number"),
+      label: "Request id",
       width: "70px",
       render: (val) => <TruncatedCell value={val} maxWidth={70} />,
     },
@@ -96,7 +96,7 @@ export const getRequestColumns = ({ navigate, t }) => {
             onClick={() => navigate(`/requests/${row.id}`)}
             className="
               group h-10 w-10 flex items-center justify-center rounded-xl
-              bg-[#FF94291F] hover:bg-[#2C6587] transition-colors
+              bg-[#FF94291F] hover:bg-[#EC613D] transition-colors
             "
           >
             <FaEye className="text-[#FF9429] group-hover:text-white" />
