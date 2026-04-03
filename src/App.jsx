@@ -10,6 +10,8 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import UserDetail from "./pages/usermanagment/UserDetail";
 import RequestsManagement from "./pages/requests-management/RequestsManagement";
 import RequestsDetails from "./pages/requests-management/RequestsDetails";
+import CustomerRequests from "./pages/requests-management/CustomerRequests";
+import BusinessRequests from "./pages/requests-management/BusinessRequests";
 import PaymentManagement from "./pages/payment-management/PaymentManagement";
 import NotFound from "./pages/NotFound";
 import PublicRoute from "./route/PublicRoute";
@@ -56,6 +58,8 @@ function App() {
               path="/requests-management"
               element={<RequestsManagement />}
             />
+            <Route path="/requests/customer" element={<CustomerRequests />} />
+            <Route path="/requests/business" element={<BusinessRequests />} />
             <Route path="/requests/:id" element={<RequestsDetails />} />
             <Route path="/payment-management" element={<PaymentManagement />} />
             <Route path="*" element={<NotFound />} />

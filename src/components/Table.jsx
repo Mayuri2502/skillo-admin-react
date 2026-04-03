@@ -17,6 +17,7 @@ import {
 } from "@heroui/react";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import { BiSolidSearch } from "react-icons/bi";
+import { CiFilter } from "react-icons/ci";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import OverviewTabs from "./OverviewTabs";
 import { TableSkeleton } from "./TableSkeleton";
@@ -215,12 +216,13 @@ const Table = ({
                       <button
                         key={tab.id}
                         onClick={() => handleTabClick(tab.id)}
-                        className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                        className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2 ${
                           activeTab === tab.id
                             ? "bg-[#EC613D] text-white shadow-sm"
                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                       >
+                        {tab.isFilter && <CiFilter size={16} />}
                         {tab.label}
                       </button>
                     ))}

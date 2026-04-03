@@ -209,7 +209,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
                         )
                       }
                       className={`flex items-center gap-2 px-5 py-3 rounded-2xl transition-all w-full text-left ${
-                        isAnyDropdownItemActive
+                        isDropdownOpen && !isAnyDropdownItemActive
                           ? "bg-[#EC613D] text-[#FFFFFF] rounded-2xl"
                           : "text-[#FFFFFF] hover:bg-[#333333] rounded-2xl"
                       }`}
