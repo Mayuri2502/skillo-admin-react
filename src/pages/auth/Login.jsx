@@ -5,7 +5,7 @@ import Input from "../../components/Input";
 import PasswordInput from "../../components/Password";
 import GuestLayout from "../../layouts/GuestLayout";
 import Loader from "../../components/Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/slice/authSlice.js";
 import IconAndTextModal from "../../components/IconAndTextModal.jsx";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const [errors, setErrors] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
@@ -106,8 +107,7 @@ const Login = () => {
       title={t("welcomeToSkillo")}
       description={t("pleaseSignIn")}
     >
-      <Loader />
-      {/* {errors && <Alert color="danger" title={errors} className="mb-4" />} */}
+      {errors && <Alert color="danger" title={errors} className="mb-4" />}
       <form
         noValidate
         onSubmit={handleSubmit}
@@ -174,9 +174,17 @@ const Login = () => {
         {/* Login Button */}
         <button
           type="submit"
-          className="w-full px-11 py-3 bg-[#EC613D] text-[#FFFFFF] text-base font-bold capitalize h-12"
+          disabled={isLoading}
+          className="w-full px-11 py-3 bg-[#EC613D] text-[#FFFFFF] text-base font-bold capitalize h-12 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {t("login")}
+          {isLoading ? (
+            <>
+              <Loader className="w-4 h-4" />
+              {t("loggingIn")}
+            </>
+          ) : (
+            t("login")
+          )}
         </button>
       </form>
     </GuestLayout>
