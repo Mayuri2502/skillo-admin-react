@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authServices from "../../services/authServices.js";
 
 export const login = createAsyncThunk(
-  "/admin/auth/login",
+  "/userService/auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await authServices.login(credentials);
-      return response;
+      const { data } = await authServices.login(credentials);
+      return data;
     } catch (err) {
       return rejectWithValue({
         message:
@@ -16,20 +16,9 @@ export const login = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk("/admin/auth/logout", async (_, { rejectWithValue }) => {
-  try {
-    const refreshToken = localStorage.getItem("_dw_art");
-    if (refreshToken) {
-      const response = await authServices.logout(refreshToken);
-      return response;
-    }
-    return { data: null };
-  } catch (err) {
-    return rejectWithValue({
-      message:
-        err?.response?.data?.message || "Logout failed",
-    });
-  }
+export const logout = createAsyncThunk("/userService/auth/logout", async () => {
+  const { data } = await authServices.logout();
+  return data;
 });
 
 const authSlice = createSlice({
@@ -90,8 +79,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
       .addCase(login.fulfilled, (state, action) => {
-        const { data } = action.payload;
-        const { user_data, access_token, refresh_token } = data;
+        const { user_data, access_token, refresh_token } = action.payload;
 
         state.isLoading = false;
         state.isSuccess = true;
@@ -116,30 +104,18 @@ const authSlice = createSlice({
       /* Logout */
       .addCase(logout.pending, (state) => {
         state.isLoading = true;
+        state.user = null;
+        state.isAuthenticated = false;
       })
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
-        state.accessToken = null;
         state.isAuthenticated = false;
-        state.isSuccess = false;
-        
-        // clear persistence
-        localStorage.removeItem("_dw_aat");
-        localStorage.removeItem("_dw_art");
-        localStorage.removeItem("userData");
       })
       .addCase(logout.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
-        state.accessToken = null;
         state.isAuthenticated = false;
-        state.isSuccess = false;
-        
-        // clear persistence even on error
-        localStorage.removeItem("_dw_aat");
-        localStorage.removeItem("_dw_art");
-        localStorage.removeItem("userData");
       });
   },
 });

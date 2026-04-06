@@ -8,12 +8,14 @@ const login = async (credentials) => {
   return data;
 };
 
-const logout = async (refreshToken) => {
-  const { data } = await axiosInstance.post(
-    "/admin/auth/logout",
-    { refresh_token: refreshToken }
-  );
-  return data;
+const logout = async () => {
+  const refreshToken = localStorage.getItem("_dw_art");
+
+  if (refreshToken) {
+    await axiosInstance.post("/admin/auth/logout", {
+      refresh_token: refreshToken,
+    });
+  }
 };
 
 export default {
