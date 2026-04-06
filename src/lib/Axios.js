@@ -41,7 +41,7 @@ axiosInstance.interceptors.request.use(
     }
 
     // ✅ Add language header (NEW)
-    const lang = localStorage.getItem("coudPouss-language") || "en";
+    const lang = localStorage.getItem("skillo-language") || "en";
     config.headers["Accept-Language"] = lang;
     config.params = config.params || {};
     config.params.lang = lang;
@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const original = error.config;
 
-    if (error.response?.status == 401 && url.includes("/change-password")) {
+    if (error.response?.status == 401 && original.url?.includes("/change-password")) {
       return Promise.reject(error);
     }
 
@@ -79,61 +79,20 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // Since Skillo admin API doesn't have refresh endpoint, disable refresh logic
+    // and directly logout on 401 errors
+    if (error.response?.status === 401) {
+      forceLogout();
+      return Promise.reject(error);
+    }
+
     if (error.response?.status !== 401 || original._retry) {
       return Promise.reject(error);
     }
 
-    original._retry = true;
-
-    const refreshToken = localStorage.getItem("_dw_art");
-    if (!refreshToken) {
-      forceLogout();
-      return Promise.reject(error);
-    }
-
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        queue.push({ resolve, reject });
-      }).then((token) => {
-        original.headers.Authorization = `Bearer ${token}`;
-        return axiosInstance(original);
-      });
-    }
-
-    isRefreshing = true;
-
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/userService/auth/refresh`,
-        { refresh_token: refreshToken },
-      );
-      // refresh-token
-      const newAccessToken = data.access_token;
-      const newRefreshToken = data.refresh_token;
-
-      localStorage.setItem("_dw_aat", newAccessToken);
-      localStorage.setItem("_dw_art", newRefreshToken);
-
-      axiosInstance.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-
-      reduxStore.dispatch(
-        setCredentials({
-          accessToken: newAccessToken,
-          user: JSON.parse(localStorage.getItem("userData")),
-        }),
-      );
-
-      resolveQueue(null, newAccessToken);
-
-      original.headers.Authorization = `Bearer ${newAccessToken}`;
-      return axiosInstance(original);
-    } catch (refreshError) {
-      resolveQueue(refreshError, null);
-      forceLogout();
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
-    }
+    // Skip refresh logic for Skillo admin
+    forceLogout();
+    return Promise.reject(error);
   },
 );
 

@@ -170,6 +170,7 @@
   "passwordMatch": "Passwords do not match",
   "loginFailed": "Login failed",
   "loginSuccessful": "Login successful",
+  "loggingIn": "Logging in...",
   "logoutSuccessful": "Logged out successfully",
   "sessionExpired": "Session expired, please login again",
   "unauthorized": "Unauthorized access",
