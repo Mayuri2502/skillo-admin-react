@@ -13,6 +13,7 @@ import RequestsDetails from "./pages/requests-management/RequestsDetails";
 import CustomerRequests from "./pages/requests-management/CustomerRequests";
 import BusinessRequests from "./pages/requests-management/BusinessRequests";
 import PaymentManagement from "./pages/payment-management/PaymentManagement";
+import ServiceManagement from "./pages/service-management/ServiceManagement";
 import NotFound from "./pages/NotFound";
 import PublicRoute from "./route/PublicRoute";
 import ProtectedRoute from "./route/ProtectedRoute";
@@ -62,6 +63,7 @@ function App() {
             <Route path="/requests/business" element={<BusinessRequests />} />
             <Route path="/requests/:id" element={<RequestsDetails />} />
             <Route path="/payment-management" element={<PaymentManagement />} />
+            <Route path="/service-management" element={<ServiceManagement />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
