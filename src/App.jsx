@@ -15,6 +15,7 @@ import BusinessRequests from "./pages/requests-management/BusinessRequests";
 import PaymentManagement from "./pages/payment-management/PaymentManagement";
 import ServiceManagement from "./pages/service-management/ServiceManagement";
 import SubscriptionManagement from "./pages/subscription-management/SubscriptionManagement";
+import DiscountManagement from "./pages/discount-management/DiscountManagement";
 import NotFound from "./pages/NotFound";
 import PublicRoute from "./route/PublicRoute";
 import ProtectedRoute from "./route/ProtectedRoute";
@@ -66,6 +67,7 @@ function App() {
             <Route path="/payment-management" element={<PaymentManagement />} />
             <Route path="/service-management" element={<ServiceManagement />} />
             <Route path="/subscription-management" element={<SubscriptionManagement />} />
+            <Route path="/discount-management" element={<DiscountManagement />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
